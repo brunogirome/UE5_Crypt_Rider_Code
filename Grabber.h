@@ -16,10 +16,7 @@ public:
 
 	void Grab();
 
-	void Release()
-	{
-		UE_LOG(LogTemp, Display, TEXT("Grabber - Release"));
-	};
+	void Release();
 
 protected:
 	virtual void BeginPlay() override;
