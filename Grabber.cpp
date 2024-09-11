@@ -15,8 +15,7 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UPhysicsHandleComponent *physicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-	if (physicsHandle)
+	if (UPhysicsHandleComponent *physicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();)
 	{
 		PhysicsHandle_ = physicsHandle;
 	}
@@ -29,12 +28,8 @@ void UGrabber::BeginPlay()
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	if (!PhysicsHandle_)
-	{
-		return;
-	}
 
-	if (PhysicsHandle_->GetGrabbedComponent())
+	if (PhysicsHandle_ && PhysicsHandle_->GetGrabbedComponent())
 	{
 		FVector targetLocation = GetComponentLocation() + GetForwardVector() * HoldDistance_;
 		PhysicsHandle_->SetTargetLocationAndRotation(targetLocation, GetComponentRotation());
@@ -43,18 +38,18 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 void UGrabber::Grab()
 {
-	if (!PhysicsHandle_)
-	{
-		return;
-	}
-
 	FHitResult hitResult;
-	if (GetGrabbableInReach(hitResult))
+	if (PhysicsHandle_ && GetGrabbableInReach(hitResult))
 	{
 		UPrimitiveComponent *hitComponent = hitResult.GetComponent();
 		if (hitComponent)
 		{
 			hitComponent->WakeAllRigidBodies();
+
+			if (AActor *hitActor = hitResult.GetActor())
+			{
+				hitActor->Tags.Add("Grabbed");
+			}
 
 			PhysicsHandle_->GrabComponentAtLocationWithRotation(
 					hitComponent,
@@ -71,13 +66,14 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
-	if (!PhysicsHandle_)
+	if (PhysicsHandle_ && PhysicsHandle_->GetGrabbedComponent())
 	{
-		return;
-	}
+		UPrimitiveComponent *grabbedComponent = PhysicsHandle_->GetGrabbedComponent();
+		if (AActor *actor = grabbedComponent->GetOwner())
+		{
+			actor->Tags.Remove("Grabbed");
+		}
 
-	if (UPrimitiveComponent *grabbedComponent = PhysicsHandle_->GetGrabbedComponent())
-	{
 		grabbedComponent->WakeAllRigidBodies();
 		PhysicsHandle_->ReleaseComponent();
 	}

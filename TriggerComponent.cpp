@@ -49,7 +49,7 @@ AActor *UTriggerComponent::GetUnlockerActor() const
 
   for (AActor *actor : overlapingActors)
   {
-    if (actor && actor->ActorHasTag(UnlockTagName_))
+    if (actor && actor->ActorHasTag(UnlockTagName_) && !actor->ActorHasTag("Grabbed"))
     {
       return actor;
     }
