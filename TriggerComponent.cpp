@@ -23,7 +23,13 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
   AActor *unlockerActor = GetUnlockerActor();
   if (unlockerActor)
   {
-    Mover_->SetShouldMove(true);
+    UPrimitiveComponent *root = Cast<UPrimitiveComponent>(unlockerActor->GetRootComponent());
+    if (root)
+    {
+      root->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+      root->SetSimulatePhysics(false);
+      Mover_->SetShouldMove(true);
+    }
   }
   else
   {
