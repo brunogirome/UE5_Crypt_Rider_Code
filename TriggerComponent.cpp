@@ -23,9 +23,9 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 
   for (AActor *actor : overlapingActors)
   {
-    if (actor)
+    if (actor && actor->ActorHasTag(UnlockTagName_))
     {
-      UE_LOG(LogTemp, Display, TEXT("Any overlapersss: %s - %f - also the size is: %d"), *actor->GetActorNameOrLabel(), GetWorld()->GetTime().GetRealTimeSeconds(), overlapingActors.Num());
+      UE_LOG(LogTemp, Display, TEXT("Man have it!"));
     }
   }
 }
