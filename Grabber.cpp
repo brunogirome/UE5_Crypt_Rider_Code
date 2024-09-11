@@ -4,6 +4,8 @@
 
 #include "Engine/World.h"
 
+#include "PhysicsEngine/PhysicsHandleComponent.h"
+
 UGrabber::UGrabber()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -12,6 +14,15 @@ UGrabber::UGrabber()
 void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UPhysicsHandleComponent *physicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	if (physicsHandle)
+	{
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UGrabber::BeginPlay - Can't get the physics handle component."));
+	}
 }
 
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
