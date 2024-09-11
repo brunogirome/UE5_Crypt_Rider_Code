@@ -21,11 +21,11 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
   TArray<AActor *> overlapingActors;
   GetOverlappingActors(overlapingActors);
 
-  for (auto *actor : overlapingActors)
+  for (AActor *actor : overlapingActors)
   {
     if (actor)
     {
-      UE_LOG(LogTemp, Display, TEXT("Any overlapersss: %s - %f"), *overlapingActors[0]->GetActorNameOrLabel(), GetWorld()->GetTime().GetRealTimeSeconds());
+      UE_LOG(LogTemp, Display, TEXT("Any overlapersss: %s - %f - also the size is: %d"), *actor->GetActorNameOrLabel(), GetWorld()->GetTime().GetRealTimeSeconds(), overlapingActors.Num());
     }
   }
 }
