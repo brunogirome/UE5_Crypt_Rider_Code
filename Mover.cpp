@@ -29,6 +29,11 @@ void UMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 	}
 }
 
+void UMover::SetShouldMove(bool ShouldMove)
+{
+	this->ShouldMove_ = ShouldMove;
+}
+
 void UMover::Move(float DeltaTime)
 {
 	if (auto *actor = GetOwner())

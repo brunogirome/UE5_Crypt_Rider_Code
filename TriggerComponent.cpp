@@ -4,6 +4,8 @@
 
 #include "Engine/World.h"
 
+#include "Mover.h"
+
 UTriggerComponent::UTriggerComponent()
 {
   PrimaryComponentTick.bCanEverTick = true;
@@ -21,12 +23,17 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
   AActor *unlockerActor = GetUnlockerActor();
   if (unlockerActor)
   {
-    UE_LOG(LogTemp, Display, TEXT("CAUTGHT!"));
+    Mover_->SetShouldMove(true);
   }
   else
   {
-    UE_LOG(LogTemp, Display, TEXT("NO DEAL..."));
+    Mover_->SetShouldMove(false);
   }
+}
+
+void UTriggerComponent::SetMover(UMover *NewMover)
+{
+  Mover_ = NewMover;
 }
 
 AActor *UTriggerComponent::GetUnlockerActor() const
