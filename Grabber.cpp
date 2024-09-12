@@ -15,7 +15,7 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (UPhysicsHandleComponent *physicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();)
+	if (UPhysicsHandleComponent *physicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>())
 	{
 		PhysicsHandle_ = physicsHandle;
 	}
@@ -45,9 +45,11 @@ void UGrabber::Grab()
 		if (hitComponent)
 		{
 			hitComponent->WakeAllRigidBodies();
+			hitComponent->SetSimulatePhysics(true);
 
 			if (AActor *hitActor = hitResult.GetActor())
 			{
+				hitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 				hitActor->Tags.Add("Grabbed");
 			}
 

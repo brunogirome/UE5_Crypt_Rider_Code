@@ -19,9 +19,12 @@ void UTriggerComponent::BeginPlay()
 void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
   Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+  if (!Mover_)
+  {
+    return;
+  }
 
-  AActor *unlockerActor = GetUnlockerActor();
-  if (unlockerActor)
+  if (AActor *unlockerActor = GetUnlockerActor())
   {
     UPrimitiveComponent *root = Cast<UPrimitiveComponent>(unlockerActor->GetRootComponent());
     if (root)
